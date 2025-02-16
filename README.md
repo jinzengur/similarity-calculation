@@ -8,4 +8,4 @@ To properly use `similarity.py` code, users need to first install the following 
 * Numpy version < 2.0
 
 Finally,
-* the similarity.py needs to be added to the python path.
+* the `similarity.py` needs to be added to the python path.
