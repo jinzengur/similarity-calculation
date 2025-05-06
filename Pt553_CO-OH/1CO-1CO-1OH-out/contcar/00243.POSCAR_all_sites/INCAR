@@ -1,0 +1,31 @@
+
+ISTART = 1
+ICHARG = 1
+LWAVE = F
+LCHARG = F
+
+#Electronic Relaxation 1
+ENCUT = 400
+EDIFF = 1.0E-04
+EDIFFG = -.05
+GGA = PE
+NPAR = 4
+#KPAR = 2
+#Ionic Relaxation
+NSW = 500
+IBRION = 2   #conjugate-gradien (CG) for initial guess position
+#IBRION = 1   #quasi-Newton: RMM-DIIS
+ISIF = 2
+#ISYM = 0  # default is 2 for PAW
+#POTIM = 0.5
+
+#DOS related values:
+ISMEAR = 2
+SIGMA = 0.1
+
+#LORBIT = 10   # calculate atomic magnetic moment
+
+#Electronic Relaxation
+#IALGO = 48
+LREAL = Auto
+#ISPIN = 2

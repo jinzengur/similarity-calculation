@@ -1,0 +1,2 @@
+  free  energy   TOTEN  =      -360.15807040 eV
+  energy  without entropy=     -360.14523348  energy(sigma->0) =     -360.15486117

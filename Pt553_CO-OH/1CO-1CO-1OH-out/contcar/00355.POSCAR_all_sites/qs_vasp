@@ -1,0 +1,174 @@
+#!/bin/bash
+#SBATCH --job-name=RUNRUN
+#SBATCH --nodes=1 # number of cluster nodes, abbreviated by -N
+#SBATCH --ntasks-per-node=24 #To set the maximum number of tasks allowed per node
+#SBATCH --cpus-per-task=1
+#SBATCH --time=04:59:59 # walltime, abbreviated by -t
+#SBATCH --partition=preempt
+#SBATCH --mem=64G
+#SBATCH -x bhd0056,bhd0085,bhd0086,bhc0162,bhc0170
+##SBATCH -x bhc0196,bhd0100,bhd0102,bhd0020,bhd0053,bhd0036,bhd0050,bhc0074,bhc0173,bhc0177,bhc0188,bhc0137,bhc0096,bhc0200,bhd0051
+##SBATCH --output=default_output-%j.out #Written in real-time. You can change the name of the files here
+##SBATCH --error=default_error-%j.error #Written in real-time. You can change the name of the files here
+
+#Go in the work directory
+cd $SLURM_SUBMIT_DIR
+
+#Get a node list
+echo $SLURM_JOB_NODELIST
+
+#Load the relevant modules, paths from here:
+module load intel impi /scratch/sdeshp10_lab/vasp/6.4.2
+#export f77_dump_flag=TRUE
+VASP_INPUTFILES="POSCAR POTCAR INCAR KPOINTS"
+VASP_OUTPUTFILES="CONTCAR OUTCAR OSZICAR"
+
+
+#Compute the total CPU/Cores needed for the specified nodes
+echo 'Total CPUs per node: ' $SLURM_CPUS_ON_NODE
+echo 'Total nodes requested: ' $SLURM_JOB_NUM_NODES
+num_core=$SLURM_CPUS_ON_NODE
+num_node=$SLURM_JOB_NUM_NODES
+let proc_num=$num_core*$num_node
+echo 'Total CPUs for this jobs: nodes x ppn: ' ${proc_num}
+
+##################~ USER VARIABLES ~###################
+# These are your email settings
+mail_start="FALSE"
+mail_converge="TRUE"
+mail_resubmit="FALSE"
+mail_fail="TRUE"
+
+# These are used for defining the filenames of the backup directories
+prefix="OLD_"
+suffix=""
+padding=2
+
+# These control how the job manipulates the environment/job
+resubmissions=10
+backupfiles="CONTCAR INCAR KPOINTS OSZICAR OUTCAR POSCAR *.o* *.e* vasprun.xml WAVECAR CHGCAR XDATCAR"
+removefiles="nodefile* OSZICAR DOSCAR EIGENVAL IBZKPT PCDAT PROCAR XDATCAR FORCECAR"
+
+
+function check_convergence {
+########################################################################################
+# check_convergence                                                                    #
+# returns: 0 = Converged, 1 = Non-empty CONTCAR, 2 = Empty CONTCAR, 3 = Missing OUTCAR #
+########################################################################################
+    if [ -s "OUTCAR" ]; then
+        if [ $(grep accuracy "OUTCAR" | wc -l) -gt 0 ]; then
+            return 0
+        else
+            if [ -s "CONTCAR" ]; then
+                return 1
+            else
+                return 2
+            fi
+        fi
+    else
+        return 3
+    fi
+}
+
+function check_startable {
+###################
+# check_startable #
+###################
+   if [ ! -s "POSCAR" ]; then
+       return 1
+   fi
+   if [ ! -s "POTCAR" ]; then
+       return 2
+   fi
+   if [ ! -s "KPOINTS" ]; then
+       return 3
+   fi
+   if [ ! -s "INCAR" ]; then
+       return 4
+   fi
+   return 0
+}
+
+function setup_restart {
+#################
+# setup_restart #
+#################
+    cp CONTCAR POSCAR
+}
+
+function backup_calculation {
+###########################################################
+# backupCalculation oldprefix oldsuffix                   #
+# 'oldprefix' is the prefix to use on the old directories #
+# 'oldsuffix' is the suffix to use on the old directories #
+###########################################################
+    $JAPPSBASE/templates/backup-files.py --silent --suffix "${suffix}" --prefix "${prefix}" --padding "${padding}" "${backupfiles}"
+}
+
+function clear_calculation {
+####################
+# clearCalculation #
+####################
+    rm $removefiles
+}
+
+function resubmit {
+############
+# resubmit #
+############
+    SUB=${SUB:-1}
+    SUB=`expr ${SUB} + 1`
+    if [ ${SUB} -le ${resubmissions} ]; then
+        if [ "${mail_resubmit}" == "TRUE" ]; then
+            send_mail "RESUB:$(expr ${SUB} - 1)"
+        fi
+	CANCEL=$(sbatch --dependency="afterany:${SLURM_JOBID}" --export=ALL,SUB=${SUB} $0)
+    fi
+}
+
+function cancel_resubmit {
+##################
+# cancelResubmit #
+##################
+    if [ -n "${CANCEL}" ]; then
+        scancel "${CANCEL}"
+    fi
+}
+
+function completed {
+#############
+# completed #
+#############
+    cancel_resubmit
+    sleep 3
+    exit
+}
+
+check_convergence
+convergence="${?}"
+
+if [ "${convergence}" -eq 0 ]; then
+    completed
+    exit
+fi
+
+if [ "${convergence}" -eq 1 ]; then
+    backup_calculation
+    setup_restart
+    clear_calculation
+fi
+
+resubmit
+
+#Export needed modules and paths
+
+#Mention your binary here or alternatively load a module
+touch WAVECAR CHGCAR CHG
+echo $proc_num
+mpirun -n $proc_num vasp_std
+check_convergence
+convergence="${?}"
+if [ "${convergence}" -eq 0 ]; then
+    completed
+fi
+
