@@ -45,6 +45,7 @@ tk_width = 5
 figsize = (9,6)
 
 def draw_ego_graph(full,ego_arr,atoms):
+    
     """
     draw the ego graphs
     Args:
@@ -59,6 +60,7 @@ def draw_ego_graph(full,ego_arr,atoms):
     draw_atomic_graphs(ego_arr, atoms=atoms, labels=labels)
 
 def get_unique_node_arr(node_arr):
+    
     """
     get the non-duplicate nodes names
     Args:
@@ -79,6 +81,7 @@ def get_unique_node_arr(node_arr):
     return node_name_arr
 
 def get_node_name_arr(graph,ele_name):
+    
     """
     get the node names that match with the given element name in the given ego graph 
     Args:
@@ -87,6 +90,7 @@ def get_node_name_arr(graph,ele_name):
     Returns:
         node_str_arr (list): list of node names
     """
+    
     node_str_arr=[]
     for n in graph.nodes():
         at_name = n.split(':')[0]
@@ -96,6 +100,7 @@ def get_node_name_arr(graph,ele_name):
     return node_str_arr
 
 def make_dataframe(data_arr,col_name_arr,csv_path=False):
+    
     """
     create a pd.dataframe from list
     Args:
@@ -104,6 +109,7 @@ def make_dataframe(data_arr,col_name_arr,csv_path=False):
     Returns:
         df (pd.dataframe): a dataframe 
     """
+    
     temp_dict = {}
     for (idx,col) in enumerate(col_name_arr):
         temp_dict[col] = data_arr[idx]
@@ -115,6 +121,7 @@ def make_dataframe(data_arr,col_name_arr,csv_path=False):
     return df
 
 def ploting(results_df,interval=False):
+    
     """
     plot the similarity profile
 
@@ -157,6 +164,7 @@ def ploting(results_df,interval=False):
     return
 
 def cluster_detect(csv_path):
+    
     """
     Use DBSCAN to detect and label the similarity scores clusters
 
@@ -205,6 +213,7 @@ def get_ini_conf_path_from_outcar_path(contcar_path):
     return conf_path
 
 def view_structure(conf_arr,unrelaxed=False):
+    
     """
     use ase to visualize the structures
 
@@ -249,6 +258,7 @@ def get_conf_info(struc_fname,start_atom_ele='N'):
     return conf_info_str
 
 def make_unique_dir(unique_conf_arr,dir_name):
+    
     """
     make a dir that contains the un-relaxed configurations of the given non-similar relaxed configurations
     
@@ -297,6 +307,7 @@ def make_unique_dir(unique_conf_arr,dir_name):
     return unique_dir_conf_path
 
 def get_energy(outcar_path):
+    
     """
     get the energy value from the vasp output OUTCAR file
 
@@ -305,6 +316,7 @@ def get_energy(outcar_path):
     Returns:
         energy_val (float): energy value reported in the OUTCAR file.
     """
+    
     energy_file_path = os.path.dirname(outcar_path)+'/energies.txt'
     with open(energy_file_path,'r') as file:
         contents = file.readlines()
@@ -318,6 +330,7 @@ def get_energy(outcar_path):
     return energy_val
 
 def match_outcar_with_poscar(outcar_path,conf_path_arr):
+    
     """
     find the corresponding relaxed configuration CONTCAR path from the given OUTCAR path
 
@@ -342,6 +355,7 @@ def match_outcar_with_poscar(outcar_path,conf_path_arr):
     return conf_path_str
 
 def get_energys(conf_path_arr,plot=False):
+    
     """
     get the energy value array from the given configuration path string array
 
@@ -390,6 +404,7 @@ def get_energys(conf_path_arr,plot=False):
     return energy_df_sorted
 
 def get_conf_path_arr_from_csv(csv_path):
+    
     """
     get the array of configurations from the similarity csv file
 
@@ -409,6 +424,7 @@ def get_conf_path_arr_from_csv(csv_path):
     return conf_all_arr
 
 def get_unique_evolution(csv_path,e_cutoff=0.3,n_cluster=1,plot=False,show_struc=False):
+    
     """
     applying Evo-Sim to get the non-similar relaxed configurations
 
@@ -479,6 +495,7 @@ def get_unique_evolution(csv_path,e_cutoff=0.3,n_cluster=1,plot=False,show_struc
     return conf_arr_left
 
 def get_sorted_cluster_idx_arr(results_df):
+    
     """
     sort the cluster label in ascending order according the similarity score magnitude
 
@@ -554,29 +571,6 @@ def get_sorted_cluster_idx_arr(results_df):
     cluster_idx_arr_all = sim_cluster_df_sorted['cluster_idx'].to_numpy()
 
     return cluster_idx_arr_all
-
-def cluster_detect(csv_path):
-    
-    results_df = pd.read_csv(csv_path).dropna()
-    similarity = results_df['similarity'].to_numpy()
-
-    range_sim_all = max(similarity) - min(similarity)
-    eps_limit_all = range_sim_all/500
-    min_n = 2
-    if len(similarity) >= 1000:
-        min_n = 5
-        eps_limit_all = range_sim_all/500
-    else:
-        eps_limit_all = range_sim_all/100
-    
-    dbscan_model_all = DBSCAN(eps=eps_limit_all,min_samples=min_n)
-    clustering = dbscan_model_all.fit(similarity.reshape(-1,1))
-    cluster_labels = clustering.labels_
-    
-    new_results_df = pd.DataFrame(results_df)
-    new_results_df['cluster'] = cluster_labels
-    
-    return new_results_df
 
 def get_reduced_df(csv_path,n_cluster=1):
 
@@ -775,6 +769,20 @@ skin = 0.25
 radius = 2
 grid = [2,2,0]
 def make_conf(atoms_filename,ad_file_path,min_dist=2,no_adsorb='',coordination="1,2,3"):
+
+    """
+    generate initial configurations for DFT calculations
+
+    Args:
+        atoms_filename (str): path to the configuration (either a lower coverage configuration or an empty surface) that need to add another adsorbate.
+        ad_file_path (str): path to the adsorbate configuration to be added to the configuration of interest
+        min_dist (float, optional): minimal distance (Å) allowed between adsorbates. default=2
+        no_adsorb (str, optional): surface atom elements that should not place adsorbate. i.e. 'Sn' or 'Sn,W'. default=''.
+        coordination (str, optional): surface sites to place the adsorbate; "1" for top, "2" for bridge, "3" for hollow. defaule="1,2,3"
+    Returns:
+        movie (list): a list of ase.Atoms objects corresponds to the generated initial configurations.
+    """
+
     movie = []
     atoms = read(atoms_filename)
     ads = read(ad_file_path)
