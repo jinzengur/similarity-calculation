@@ -9,7 +9,7 @@ To properly use `similarity.py` code, users need to first install the following 
 * PyTorch; https://pytorch.org
 * Numpy version < 2.0
 * scikit-learn; https://scikit-learn.org/stable/install.html
-* Joblib (optional) for parallel processing speed-up; https://joblib.readthedocs.io/en/stable/installing.html
+* Joblib; for parallel processing speed-up; https://joblib.readthedocs.io/en/stable/installing.html
 
 Finally,
 * the `similarity.py` needs to be added to the python path for similarity score calculations.

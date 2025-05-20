@@ -300,7 +300,7 @@ for dir_path in np.unique(wrong_conf_arr):
     shutil.rmtree(dir_path)
 os.chdir(pwd)
 
-### for stepped surfaces, unconstrain all atoms 
+### for stepped surfaces, unconstrain all atoms
 ### except the bottom-most layer Metal atoms.
 ### the z coordinate cutoff need to eyeball!!!
 os.chdir(mother_dir)
