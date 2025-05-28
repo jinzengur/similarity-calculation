@@ -25,7 +25,8 @@ Finally,
 * the `utility.py` needs to be added to the python path for $EvoSim$.
 
 ### How to cite
-Please cite the following work if you are using the similarity algorithm and $EvoSim$
+If you found the similarity algorithm and $EvoSim$ is useful in your research,
+please cite the following work.
 ```
 @article{zeng2025structural,
   title={A Structural Similarity based Data-Mining Algorithm for Modeling Multi-Reactant Heterogeneous Catalysts},
