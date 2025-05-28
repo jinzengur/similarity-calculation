@@ -67,5 +67,5 @@ root_dir
 ├── ...
 ```
 
-The `evosim.ipynb`, `step1_get_init_conf.py`, and `step2_postprocess_contcars.py` is \
+The `evosim.ipynb`, `step1_get_init_conf.py`, and `step2_postprocess_contcars.py` is
 heavely rely on the above directory structure.
