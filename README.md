@@ -40,7 +40,7 @@ Please cite the following work if you are using the similarity algorithm and $Ev
 
 ### Note
 This directory has the structure:
-```
+```bash
 root_dir
 ├── Pt553_CO-OH/
     ├── CO.POSCAR # CO structure POSCAR
