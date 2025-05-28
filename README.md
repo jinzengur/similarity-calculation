@@ -39,7 +39,7 @@ Please cite the following work if you are using the similarity algorithm and $Ev
 ```
 
 ### Note
-This directory have the structure:
+This directory has the structure:
 ```
 root_dir
 ├── Pt553_CO-OH/
