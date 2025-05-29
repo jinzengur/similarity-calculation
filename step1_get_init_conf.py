@@ -128,8 +128,6 @@ def get_unique_conf(confs_path='all_sites/*',energy=False):
 
     chem_envs = []
     
-    # num_cores = multiprocessing.cpu_count() - 1
-    # print('num_cores:',num_cores)
     try:
         chem_envs = Parallel(n_jobs=-2)(delayed(make_graph)(i)
                                     for i in tqdm(all_atoms))
@@ -259,8 +257,6 @@ elif args.stepped:
 else:
     pass
 
-# gen_site_process = subprocess.Popen(gen_site_arg_str,shell=True)
-# gen_site_process.wait()
 print('coordinations:',coordinations)
 movie_raw = Parallel(n_jobs=-2)(delayed(utility.make_conf)(i,args.ad_file,no_adsorb=no_adsorb,min_dist=min_dist,coordination=coordinations)
                                        for i in tqdm(glob.glob(args.conf_dir)))

@@ -8,7 +8,7 @@ An example similarity calculation can be found in `sim_calc.ipynb`.
 An example of $EvoSim$ application can be found in `evosim.ipynb`,
 involving the usage of `step1_get_init_conf.py` and `step2_postprocess_contcars.py`.
 
-To properly use `similarity.py` code, users need to install the following packages.
+To properly use `similarity.py` code, users need to install the following packages.\
 First, create a new conda environment called `sim`.
 ```bash
 conda create -n sim python=3.9
