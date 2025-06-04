@@ -27,7 +27,7 @@ Finally,
 ### How to cite
 If you find the similarity algorithm and $EvoSim$ is useful in your research,
 please cite the following work. \
-Jin Zeng, Jiatong Gui and Siddharth Deshpande., **A structural similarity based data-mining algorithm for modeling multi-reactant heterogeneous catalysts** *Chemical Science* DOI: 10.1039/D5SC02117K. [read paper](https://pubs.rsc.org/en/content/articlehtml/2025/sc/d5sc02117k)
+Jin Zeng, Jiatong Gui and Siddharth Deshpande., **A structural similarity based data-mining algorithm for modeling multi-reactant heterogeneous catalysts**., *Chemical Science*., DOI: 10.1039/D5SC02117K. [read paper](https://pubs.rsc.org/en/content/articlehtml/2025/sc/d5sc02117k)
 ```
 @article{zeng2025structural,
   title={A Structural Similarity based Data-Mining Algorithm for Modeling Multi-Reactant Heterogeneous Catalysts},
