@@ -1,7 +1,9 @@
 # Code for similarity calculations and $EvoSim$
 
+![](conf_img/toc.png)
+
 Code for calculating pairwise structural similarity between
-catalyst-adosrbate complexes.  
+catalyst-adosrbate complexes.
 
 An example similarity calculation can be found in `sim_calc.ipynb`.
 
