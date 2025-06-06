@@ -46,7 +46,7 @@ Jin Zeng, Jiatong Gui and Siddharth Deshpande., **A structural similarity based 
 Three videos are made that covevers:
 * [Installation](https://www.youtube.com/watch?v=OvHoN5R5ic8&list=PLhdp8I9vDBKuK72udYfeh-ielXE00nexc&index=3)
 * [Similarity Calculation](https://www.youtube.com/watch?v=YnqTpfUX51s&list=PLhdp8I9vDBKuK72udYfeh-ielXE00nexc&index=2)
-* [*EvoSim*](https://www.youtube.com/watch?v=QZH-TUeKGTM&list=PLhdp8I9vDBKuK72udYfeh-ielXE00nexc&index=1)
+* [EvoSim](https://www.youtube.com/watch?v=QZH-TUeKGTM&list=PLhdp8I9vDBKuK72udYfeh-ielXE00nexc&index=1)
 
 Feel free to watch them!
 
