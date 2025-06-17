@@ -226,7 +226,7 @@ get_unique_conf(confs_path='*POSCAR*/CONTCAR',energy=True)
 ### otherwise, the configuration is a deteched configuration, and it will be removed.
 
 os.chdir(pwd)
-print('Remove the deteched adsorbates configurations')
+print('Remove the detached adsorbates configurations')
 isomorph_contcar_path_arr,contcar_outcar_dict = utility.get_contcar_from_isomor_outcar(f'{args.contcar_dir}/unique_dir')
 
 deteched_conf_arr_i = [check_deteched(contcar_path) 
